@@ -1,11 +1,11 @@
 What is CI, CD & CDE?
 -
 
-- Continuous Integration (CI): the practice of frequently merging code changes into a shared repository, followed by an automated build and testing process to catch and resolve issues early on.
+- Continuous Integration `CI`: the practice of frequently merging code changes into a shared repository, followed by an automated build and testing process to catch and resolve issues early on.
 
-- Continuous Delivery (CD): the practice of automatically building, testing, and deploying code changes to a staging or production environment.
+- Continuous Delivery `CD`: the practice of automatically building, testing, and deploying code changes to a staging or production environment.
 
-- Continuous Deployment (CDE): the practice of automatically deploying code changes directly to production without human intervention, assuming that all tests and quality checks have passed.
+- Continuous Deployment `CDE`: the practice of automatically deploying code changes directly to production without human intervention, assuming that all tests and quality checks have passed.
 
 ### What is Jenkins?
 
