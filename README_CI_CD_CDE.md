@@ -206,7 +206,7 @@ Automating:
 
 Now we need to automate the whole process, plus we need 
 to make sure that `dev branch` in Jenkins is going to run all the required tests
-and if they all `Pass` then it `dev branch` should merge with `main branch`.
+and if they all pass then our `dev branch` should merge with `main branch` through another Jenkins job.
 
 1. First we need to change our `mateusz-CI` job so it can check the changes of our GitHub repo first on `dev branch`.
 2. Go to `mateusz-CI` job.
@@ -214,8 +214,93 @@ and if they all `Pass` then it `dev branch` should merge with `main branch`.
 
 ![dev_change.png](files%2Fdev_change.png)
 - click `Save`.
-4. Next we need to create new job called `mateusz-CI-merge`.
-5. 
+4. Next we need to create new job called `mateusz-CI-merge` (we can use our previous job/item as a reference).
+5. In `General` add name, description & `Discard old
+build` set to `Max# 3`
+6. In `Source Code Management` copy the settings from the previous task. 
+Then click on `Add` in `Additional Behaviours` and select `Merge before build`:
+- name of repo: set to `origin`
+- branch to merge to: set to `main`
+
+![src_sett.png](files%2Fsrc_sett.png)
+
+7. In Post-build Action click on Add and select Git Publisher:
+- Enable Push only if build successful
+- Enable Merge Results
+
+![post_built.png](files%2Fpost_built.png)
+
+- click `Save`
+8. To test the job manually we can use `Build now`.
+
+Trigger merge job if test is successful.
+-
+
+1. Go back to your `mateusz-CI` job configuration.
+2. Scroll down to `Post-build actions` and add `Build other projects`
+3. In `Projects to build` type the name of the project you want to run, for example `mateusz-CI-merge`.
+
+![post_built_actions.png](files%2Fpost_built_actions.png)
+
+4. Save your project.
+5. Now, to test if it works, push some changes form your 
+local repo and it should trigger the test first (`mateusz-CI`), and if the test 
+is successful it will then merge the changes from dev branch 
+to main branch (`mateusz-CI-merge`) and push the changes to your GitHub.
+
+Creating a CICD pipeline:
+-
+1. Launch a new EC2 Instance.
+2. Use `App AMI`, as it already has all the dependencies installed.
+3. Add new security group, with ports below:
+
+![inb_rules.png](files%2Finb_rules.png)
+
+- HTTP port `80`
+- SSH port `22`
+- Custom TCP port `3000`
+- so far all of them set on `My IP`
+
+4. Launch the Instance.
+5. Go to Jenkins.
+6. Create a new job/item.
+7. In General settings add name: `mateusz-CI-deploys`, description and set `Discard old builds` to 3.
+8. In `Source code management` set to `Git`, `Repository URL` paste your `ssh link` to GitHub
+repo, in `Credentials select` the jenkins key, and in `Branches` to build write `*/main`.
+9. In Build Triggers select `GitHub hook trigger`
+10. In `Build Environment` select `ssh agent`. There you have to add your `AWS pem file`, similar to how we add `ssh private key` for GitHub connection.
+11. Write `Execute shell` script to run when connecting to EC2:
+
+
+
+![shell_sc.png](files%2Fshell_sc.png)
+
+Make sure to paste proper public IP of your instance.
+
+```commandline
+scp -v -r -o StrictHostKeyChecking=no app/ ubuntu@34.242.225.151:/home/ubuntu/
+ssh -A -o StrictHostKeyChecking=no ubuntu@34.242.225.151 <<EOF
+
+cd app
+pm2 kill
+# sudo npm install pm2 -g
+nohup node app.js > /dev/null 2>&1 &
+```
+12. Save your job.
+13. Now to make sure that whole process is going to run as in one pipeline go to your `mateusz-CI-merge` & click `Configure`.
+14. Scroll down and in `Post-build Actions` find `Build other projects`.
+15. Find your `mateusz-CI-deploy` job & check `Trigger only if build is stable`.
+16. Click `Save`
+17. Now, if you make any changes to the `app` and push code from your local repo, it should trigger all the job we written above and then it will launch an updated version of the app on the EC2 instance. 
+For example, I changed the text that show up after pasting our Instance public IP:
+
+![dream_team.png](files%2Fdream_team.png)
+
+
+
+
+
+
 
 
 
