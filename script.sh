@@ -1,5 +1,6 @@
 
 # Provisioning for app vm
+# Changing for the CI
 # Update the sources list
 sudo apt-get update -y
 # upgrade any packages available
