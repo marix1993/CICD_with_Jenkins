@@ -158,3 +158,66 @@ npm test
 26. After clicking `Console output` we can scroll down to see `Checks passed`, and we can see what it can look like for a successful test, shown below.
 
 ![success.png](files%2Fsuccess.png)
+
+Webhook Trigger creation:
+-
+
+1. Create webhook for Jenkins/endpoint.
+2. Create a Webhook in Github for repo where we have `app` code.
+![webhook.png](files%2Fwebhook.png)
+
+![webhook2.png](files%2Fwebhook2.png)
+- make sure to paste Jenkins IP
+- add `/github-webhook/` at the end
+- change `Content type` to `application/json`
+- check `Just the push event`
+- and at the end click `Add Webhook`
+- to make sure that our `Jenkins Job` has `GitHub hook trigger for GITScm polling` checked in `Build Triggers`.
+
+![hook_tr.png](files%2Fhook_tr.png)
+
+3. Test Webhook - testing status code 200.
+4. Make change to Github readme and commit change.
+
+On local machine - Jenkins
+-
+1. On GitBash, we navigate to our directory linked to repo.
+2. `git pull` to pull changes from the GitHub changes we made earlier.
+3. `git add .` then `git commit -m "xxxx"` then `git push` to push it to the GitHub.
+4. Check Jenkins after pushing the new changes, and it should show you a new build being deployed as shown below.
+
+![jen_chan.png](files%2Fjen_chan.png)
+
+MERGE - NEW BRANCH - JENKINS
+-
+
+1. Create new job called `mateusz-CI-merge`, we do this by selecting our `old mateusz-CI` template.
+2. Create `dev branch` on local host and make change to Readme.
+- to create dev branch we need to navigate to our repo directory in GitBash
+- use: `git branch dev`
+- `git checkout dev`
+3. If we need to push some changes to our `dev branch` we should use (make some changes to the Readme first):
+- `git add .`
+- `git commit -m "..."`
+- `git push -u origin dev`
+
+Automating:
+-
+
+Now we need to automate the whole process, plus we need 
+to make sure that `dev branch` in Jenkins is going to run all the required tests
+and if they all `Pass` then it `dev branch` should merge with `main branch`.
+
+1. First we need to change our `mateusz-CI` job so it can check the changes of our GitHub repo first on `dev branch`.
+2. Go to `mateusz-CI` job.
+3. In `Branches to build` change `Branch Specifier` from `*/main` to `*/dev`
+
+![dev_change.png](files%2Fdev_change.png)
+- click `Save`.
+4. Next we need to create new job called `mateusz-CI-merge`.
+5. 
+
+
+
+
+
