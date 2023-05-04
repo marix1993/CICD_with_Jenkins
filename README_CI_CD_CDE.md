@@ -28,11 +28,11 @@ integration and continuous delivery. It provides a wide range of plugins that ca
 
 - Other tools that can be used for CI/CD include GitLab CI/CD, Travis CI, CircleCI, and AWS CodePipeline, among others.
 
-### Jenkins stages:
+###  Jenkins stages:
 
 - Source - pipeline retrives source code. checking the code and getting latest updates
 - Build - source code compiled (readable, syntax free), dependencies resolved ( and artefacts generated, convert source code into deployable form eg exec files or libs
-- Test - Various tests executed to ensure quality and functinality of application, eg unit tests, integration tests, and other automated tests
+- Test - Various tests executed to ensure quality and functionality of application, eg unit tests, integration tests, and other automated tests
 - Production - After tests, application is deployed to production environment, you prepare the infrastructure, by configuring app and deploying it to environment
 
 ### What is the difference between continuous delivery (CD) and Continuous Deployment (CDE)?
