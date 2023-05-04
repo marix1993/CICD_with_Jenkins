@@ -28,7 +28,7 @@ integration and continuous delivery. It provides a wide range of plugins that ca
 
 - Other tools that can be used for CI/CD include GitLab CI/CD, Travis CI, CircleCI, and AWS CodePipeline, among others.
 
-###  Jenkins stages:
+### Jenkins stages:
 
 - Source - pipeline retrives source code. checking the code and getting latest updates
 - Build - source code compiled (readable, syntax free), dependencies resolved ( and artefacts generated, convert source code into deployable form eg exec files or libs
